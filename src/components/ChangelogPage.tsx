@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Megaphone, ChevronDown, ChevronUp, Heart, Trash2, Send, Loader2, Plus, MessageSquare } from "lucide-react";
 
@@ -13,6 +13,40 @@ function timeAgo(ts: number) {
   const h = Math.floor(m / 60);
   if (h < 24) return `${h}h ago`;
   return `${Math.floor(h / 24)}d ago`;
+}
+
+function HypeAd() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = ref.current;
+    if (!container) return;
+
+    // Set options before script loads
+    (window as any).atOptions = {
+      key: "5aed292251276d82b269fc3b8ecc354d",
+      format: "iframe",
+      height: 90,
+      width: 728,
+      params: {},
+    };
+
+    const script = document.createElement("script");
+    script.src = "https://www.highperformanceformat.com/5aed292251276d82b269fc3b8ecc354d/invoke.js";
+    script.async = true;
+    container.appendChild(script);
+
+    return () => {
+      if (container.contains(script)) container.removeChild(script);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{ display: "flex", justifyContent: "center", width: "100%", minHeight: 90 }}
+    />
+  );
 }
 
 export default function ChangelogPage({ onNavigate }: { onNavigate: (url: string) => void }) {
@@ -312,6 +346,7 @@ export default function ChangelogPage({ onNavigate }: { onNavigate: (url: string
           </motion.div>
         ))}
       </div>
+      <HypeAd />
     </div>
   );
 }

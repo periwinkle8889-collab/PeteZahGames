@@ -157,6 +157,46 @@ function FluidCanvas() {
   );
 }
 
+function HypeAd() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = ref.current;
+    if (!container) return;
+
+    // Set options before script loads
+    (window as any).atOptions = {
+      key: "5aed292251276d82b269fc3b8ecc354d",
+      format: "iframe",
+      height: 90,
+      width: 728,
+      params: {},
+    };
+
+    const script = document.createElement("script");
+    script.src =
+      "https://www.highperformanceformat.com/5aed292251276d82b269fc3b8ecc354d/invoke.js";
+    script.async = true;
+    container.appendChild(script);
+
+    return () => {
+      if (container.contains(script)) container.removeChild(script);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        width: "100%",
+        minHeight: 90,
+      }}
+    />
+  );
+}
+
 function TypingDots() {
   return (
     <span
@@ -961,25 +1001,25 @@ export default function AIPage({
           </div>
         </div>
 
-          <div className="relative flex items-center gap-2">
-            <button
-              onClick={handleScreenToggle}
-              title="AI Screen Assistant"
-              style={{
-                background: "transparent",
-                border: "none",
-                cursor: "pointer",
-                padding: 4,
-                color: showScreenWidget
-                  ? "rgba(150,200,255,0.9)"
-                  : "rgba(255,255,255,0.25)",
-                transition: "color 0.2s",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Monitor size={14} />
-            </button>
+        <div className="relative flex items-center gap-2">
+          <button
+            onClick={handleScreenToggle}
+            title="AI Screen Assistant"
+            style={{
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              padding: 4,
+              color: showScreenWidget
+                ? "rgba(150,200,255,0.9)"
+                : "rgba(255,255,255,0.25)",
+              transition: "color 0.2s",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Monitor size={14} />
+          </button>
           <AnimatePresence>
             {modelOpen && (
               <motion.div
@@ -1038,33 +1078,36 @@ export default function AIPage({
         ))}
 
         {showSuggestions && messages.length <= 1 && (
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex flex-wrap gap-2 justify-center mt-auto pt-4"
-          >
-            {SUGGESTIONS.map((s) => (
-              <button
-                key={s}
-                onClick={() => sendMessage(s)}
-                className="px-3 py-1.5 rounded-full text-[11px] text-foreground/50 hover:text-foreground transition-all"
-                style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.borderColor =
-                    "rgba(255,255,255,0.18)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.borderColor =
-                    "rgba(255,255,255,0.07)";
-                }}
-              >
-                {s}
-              </button>
-            ))}
-          </motion.div>
+          <>
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex flex-wrap gap-2 justify-center mt-auto pt-4"
+            >
+              {SUGGESTIONS.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => sendMessage(s)}
+                  className="px-3 py-1.5 rounded-full text-[11px] text-foreground/50 hover:text-foreground transition-all"
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.07)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor =
+                      "rgba(255,255,255,0.18)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor =
+                      "rgba(255,255,255,0.07)";
+                  }}
+                >
+                  {s}
+                </button>
+              ))}
+            </motion.div>
+            <HypeAd />
+          </>
         )}
       </div>
 

@@ -220,6 +220,40 @@ function FluidCanvas({ enabled }: { enabled: boolean }) {
   );
 }
 
+function HypeAd() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = ref.current;
+    if (!container) return;
+
+    // Set options before script loads
+    (window as any).atOptions = {
+      key: "5aed292251276d82b269fc3b8ecc354d",
+      format: "iframe",
+      height: 90,
+      width: 728,
+      params: {},
+    };
+
+    const script = document.createElement("script");
+    script.src = "https://www.highperformanceformat.com/5aed292251276d82b269fc3b8ecc354d/invoke.js";
+    script.async = true;
+    container.appendChild(script);
+
+    return () => {
+      if (container.contains(script)) container.removeChild(script);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{ display: "flex", justifyContent: "center", width: "100%", minHeight: 90 }}
+    />
+  );
+}
+
 const C = {
   bg:       "hsl(216 32% 6%)",
   surface:  "hsl(216 26% 9%)",
@@ -573,6 +607,9 @@ export default function AccountPage({ onNavigate }: { onNavigate: (url: string) 
             onMouseLeave={e => (e.currentTarget.style.color = C.textSub)}>
             {authMode === "signin" ? "No account? Create one" : "Already have an account? Sign in"}
           </button>
+        </div>
+        <div style={{ marginTop: "12px" }}>
+          <HypeAd />
         </div>
       </motion.div>
     </div>

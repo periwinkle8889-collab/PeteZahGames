@@ -137,6 +137,40 @@ function FluidCanvas() {
   );
 }
 
+function HypeAd() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = ref.current;
+    if (!container) return;
+
+    // Set options before script loads
+    (window as any).atOptions = {
+      key: "5aed292251276d82b269fc3b8ecc354d",
+      format: "iframe",
+      height: 90,
+      width: 728,
+      params: {},
+    };
+
+    const script = document.createElement("script");
+    script.src = "https://www.highperformanceformat.com/5aed292251276d82b269fc3b8ecc354d/invoke.js";
+    script.async = true;
+    container.appendChild(script);
+
+    return () => {
+      if (container.contains(script)) container.removeChild(script);
+    };
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{ display: "flex", justifyContent: "center", width: "100%", minHeight: 90 }}
+    />
+  );
+}
+
 function AddGameModal({ onAdd, onClose }: { onAdd: (g: Game) => void; onClose: () => void }) {
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
@@ -528,7 +562,7 @@ export default function GamesPage({ onNavigate }: GamesPageProps) {
                   ))}
                 </AnimatePresence>
               </div>
-
+              <HypeAd />
               {hasMore && (
                 <div ref={loadMoreRef} className="flex justify-center py-8">
                   <div className="w-4 h-4 rounded-full border border-white/10 border-t-white/40 animate-spin" />
